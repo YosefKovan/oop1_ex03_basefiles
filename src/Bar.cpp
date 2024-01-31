@@ -17,23 +17,21 @@ void Bar::setLocations() {
 	}
 }
 //----------------------------------------------------
-void Bar::printBarToScreen(sf::RenderWindow& window, 
-	                       const std::vector<sf::Texture>& texture) {
+void Bar::printBarToScreen(sf::RenderWindow& window, sf::Sprite sprite[8]){
 
 	for (int i = 0; i < 7; i++) {
-		auto sprite = sf::Sprite(texture[i]);
-		sprite = scaleImage(m_objectSize, m_objectSize, sprite);
-		sprite.setPosition(m_objectLocations[i].x, m_objectLocations[i].y);
-		window.draw(sprite);
+		scaleImage(m_objectSize, m_objectSize, sprite[i]);
+	    sprite[i].setPosition(m_objectLocations[i].x, m_objectLocations[i].y);
+		window.draw(sprite[i]);
 	}
 }
 //----------------------------------------------------
-sf::Sprite Bar::scaleImage(int width, int height, sf::Sprite sprite){
+void Bar::scaleImage(int width, int height, sf::Sprite &sprite){
 
 	float xScale = width / sprite.getLocalBounds().width;
 	float yScale = height / sprite.getLocalBounds().height;
 	sprite.setScale(xScale, yScale);
-	return sprite;
+	
 }
 //----------------------------------------------------
 bool Bar::isOnBar(sf::Vector2f location) const{

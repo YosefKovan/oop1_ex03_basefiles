@@ -56,10 +56,13 @@ void Grid::drawGrid(sf::RenderWindow& window){
 bool Grid::isOnGrid(sf::Vector2f position) {
 
 	if (position.x >= m_startLocation.x &&
-		position.x <= m_startLocation.x + m_lengthHeight.x)
+		position.x <= m_startLocation.x + m_lengthHeight.x) {
 		if (position.y >= m_startLocation.y &&
-			position.y <= m_startLocation.y + m_lengthHeight.y)
+			position.y <= m_startLocation.y + m_lengthHeight.y) {
+			std::cout << "on the grid" << std::endl;
 			return true;
+		}
+	}
 	return false;
 }
 //------------------------------------------
