@@ -1,6 +1,8 @@
 #include "Grid.h"
 #include <iostream>
 
+//std::cout << object << std::endl; for debuggind
+
 Grid::Grid(const int& rows, const int& cols) 
 	: m_rowCols(rows,cols), m_sqrSize(40, 40),
 	  m_totalGrid(1100,840)
@@ -21,36 +23,27 @@ void Grid::setVariables() {
 void Grid::createGridSquares() {
 
 	for (int row = 0; row < m_rowCols.y; row++) {
-		std::vector<sf::Vector2f> tempVector;
+		std::vector< sf::RectangleShape> rectangleVect;
 		for (int col = 0; col < m_rowCols.x; col++) {
-			addToVector(row, col, tempVector);
+			addSquaresToVect(row, col, rectangleVect);
 		}
 		
-		m_squarePositions.push_back(tempVector);
+		m_rectangles.push_back(rectangleVect);
 	}			
 }
 //------------------------------------------
-void Grid::addToVector(int row, int col, std::vector<sf::Vector2f>& vector) {
+void Grid::addSquaresToVect(int row, int col, std::vector<sf::RectangleShape>& vector) {
 
 	sf::Vector2f location;
 	location.x = m_startLocation.x + col * m_sqrSize.x;
 	location.y = m_startLocation.y + row * m_sqrSize.y;
-	vector.push_back(location);
-	
-}
-//------------------------------------------
-void Grid::drawGrid(sf::RenderWindow& window){
 
-	for (int row = 0; row < m_rowCols.y; row++) {
-		for (int col = 0; col < m_rowCols.x; col++) {
-			sf::RectangleShape rectangle(m_sqrSize);
-			rectangle.setPosition(m_squarePositions[row][col]);
-			rectangle.setFillColor(sf::Color(255, 255, 255, 128));
-			rectangle.setOutlineColor(sf::Color::Black);
-			rectangle.setOutlineThickness(2);
-			window.draw(rectangle);
-		}
-	}
+	sf::RectangleShape rectangle(m_sqrSize);
+	rectangle.setPosition(location);
+	rectangle.setFillColor(sf::Color(255, 255, 255, 128));
+	rectangle.setOutlineColor(sf::Color::Black);
+	rectangle.setOutlineThickness(2);
+	vector.push_back(rectangle);
 }
 //------------------------------------------
 bool Grid::isOnGrid(sf::Vector2f position) {
@@ -59,10 +52,60 @@ bool Grid::isOnGrid(sf::Vector2f position) {
 		position.x <= m_startLocation.x + m_lengthHeight.x) {
 		if (position.y >= m_startLocation.y &&
 			position.y <= m_startLocation.y + m_lengthHeight.y) {
-			std::cout << "on the grid" << std::endl;
 			return true;
 		}
 	}
+	
 	return false;
 }
 //------------------------------------------
+void Grid::updateRow(sf::Vector2f location, int object) {
+	
+	int row = 0;
+	sf::Vector2f gridLocation = getGridLocation(location, row);
+	Tile tile(gridLocation, object);
+	for (int r = 0; r < m_rows.size(); r++) {
+		if (m_rows[r].getRow() == row) {
+			m_rows[r].push_back(tile);
+			return;
+		}
+	}
+
+	//didnt deal with the case that the row doesnt exist!
+}
+//------------------------------------------
+sf::Vector2f Grid::getGridLocation(sf::Vector2f location, int& row) {
+
+	for (int r = 0; r < m_rowCols.y; r++) {
+		for (int c = 0; c < m_rowCols.x; c++) {
+			sf::Vector2f sqrPos = m_rectangles[r][c].getPosition();
+			if (checkPosInSquare(sqrPos, location)) {
+				row = r;
+				return sqrPos;
+			}
+		}
+	}
+}				
+//------------------------------------------
+bool Grid::checkPosInSquare(sf::Vector2f square, sf::Vector2f pos) {
+	
+	if (square.x <= pos.x && (square.x + m_sqrSize.x >= pos.x)) 
+		if (square.y <= pos.y && square.y + m_sqrSize.y >= pos.y)
+			return true;
+	
+	return false;
+}
+
+//------------------------------------------
+void Grid::drawGrid(sf::RenderWindow &m_window) {
+
+	for (int r = 0; r < m_rectangles.size(); r++) {
+		for (int c = 0; c < m_rectangles[r].size(); c++) {
+			m_window.draw(m_rectangles[r][c]);
+		}
+	}
+
+	for (int i = 0; i < m_rows.size(); i++)
+		std::cout << i << std::endl;
+	
+}

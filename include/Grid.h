@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "Row.h"
 
 enum LenhHeight{rows, cols};
 
@@ -9,9 +10,10 @@ class Grid {
 
 public:
 	Grid(const int&, const int&);
-	void drawGrid(sf::RenderWindow&);
-	void addToVector(int, int, std::vector<sf::Vector2f>&);
 	bool isOnGrid(sf::Vector2f position);
+	void updateRow(sf::Vector2f, int);
+	sf::Vector2f getGridLocation(sf::Vector2f location, int& row);
+	void drawGrid(sf::RenderWindow&);
 
 private:
 	sf::Vector2f m_rowCols;
@@ -20,9 +22,13 @@ private:
 	sf::Vector2f m_totalGrid;
 	sf::Vector2f m_sqrSize;
 	
-	std::vector<std::vector<sf::Vector2f>> m_squarePositions;
+	
+	std::vector < std::vector<sf::RectangleShape>> m_rectangles;
+	std::vector<Row> m_rows;
 
 	void setVariables();
 	void createGridSquares();
+	void addSquaresToVect(int, int, std::vector<sf::RectangleShape>&);
+	bool checkPosInSquare(sf::Vector2f vect1, sf::Vector2f vect2);
 	
 };

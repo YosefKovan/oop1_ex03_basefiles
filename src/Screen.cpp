@@ -64,7 +64,15 @@ void Screen::checkEvents() {
 	 if (m_bar.isOnBar(eventPos)) {
 		 m_bar.checkAndChangeCurObj(eventPos, m_object);
 	 }
-	// else if (m_grid.isOnGrid(eventPos))
+	 
+	 else if (m_grid.isOnGrid(eventPos)) {
+		 if (m_object != None) {
+			 m_grid.updateRow(eventPos, m_object);
+		 }
+	 }
+	 
+         
+	     
 			 
  }
  //---------------------------------
