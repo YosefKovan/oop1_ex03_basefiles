@@ -4,7 +4,7 @@
 
 Screen::Screen() 
 	: m_window(sf::VideoMode(1400, 840), "Game"), m_object(None),
-	  m_grid(15,10)
+	  m_grid(20, 20)
 {}
 //-------------------------------------
 void Screen::screenMain() {
@@ -18,13 +18,14 @@ void Screen::screenMain() {
 		m_bar.printBarToScreen(m_window, m_sprites);
 		m_grid.drawGrid(m_window);
 		checkEvents();
+		m_grid.drawImagesOnGrid(m_window, m_sprites);
 		m_window.display();
 	}
 }
 //---------------------------------
 void Screen::addImagesToVector() {
 	
-	for (int i = 0; i < 8; i++){
+	for (int i = 0; i < 10; i++){
 		sf::Texture texture;
 	    texture.loadFromFile(m_imgNamesArr[i]);
 		m_textures[i] = texture;
@@ -37,8 +38,7 @@ void Screen::addImagesToVector() {
 //---------------------------------
 void Screen::printBackground() {
 
-	sf::Sprite sprite(m_textures[Background]);
-	m_window.draw(sprite);
+	m_window.draw(m_sprites[Background]);
 }
 //---------------------------------
 void Screen::checkEvents() {
@@ -69,11 +69,7 @@ void Screen::checkEvents() {
 		 if (m_object != None) {
 			 m_grid.updateRow(eventPos, m_object);
 		 }
-	 }
-	 
-         
-	     
-			 
+	 }		 
  }
  //---------------------------------
  

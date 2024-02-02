@@ -1,7 +1,7 @@
 #include "Bar.h"
 
 Bar::Bar()
-	:m_barWidth(200), m_objectSize(90), m_rowSpace(30), m_barHeight(840)
+	:m_barWidth(200), m_objectSize(60), m_rowSpace(30), m_barHeight(840)
 {
 	setLocations();
 }
@@ -10,7 +10,7 @@ void Bar::setLocations() {
 
 	int row = 20, col = 20;
 	
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < 9; i++) {
 		auto vector2i = sf::Vector2i(col, row);
 		m_objectLocations.push_back(vector2i);
 		row += (m_objectSize + m_rowSpace);
@@ -19,7 +19,7 @@ void Bar::setLocations() {
 //----------------------------------------------------
 void Bar::printBarToScreen(sf::RenderWindow& window, sf::Sprite sprite[8]){
 
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < 9; i++) {
 		scaleImage(m_objectSize, m_objectSize, sprite[i]);
 	    sprite[i].setPosition(m_objectLocations[i].x, m_objectLocations[i].y);
 		window.draw(sprite[i]);
@@ -45,7 +45,7 @@ bool Bar::isOnBar(sf::Vector2f location) const{
 //----------------------------------------------------
 void Bar::checkAndChangeCurObj(sf::Vector2f location, int &object) {
 	
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < 9; i++) {
 		int x = m_objectLocations[i].x;
 		int y = m_objectLocations[i].y;
 		if (location.x >= x && location.x <= x + m_objectSize) {

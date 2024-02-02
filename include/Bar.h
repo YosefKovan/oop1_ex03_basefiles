@@ -7,7 +7,7 @@
 class Bar {
 public:
 	Bar();
-	void printBarToScreen(sf::RenderWindow&, sf::Sprite[8]);
+	void printBarToScreen(sf::RenderWindow&, sf::Sprite[10]);
 	bool isOnBar(sf::Vector2f) const;
 	void checkAndChangeCurObj(sf::Vector2f, int&);
 	

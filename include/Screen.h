@@ -17,8 +17,8 @@ private:
 	std::vector<sf::Texture> m_texture;
 	std::vector<sf::Sprite> m_sprite;
 
-	sf::Texture m_textures[8];
-	sf::Sprite m_sprites[8];
+	sf::Texture m_textures[10];
+	sf::Sprite m_sprites[10];
 
 	void addImagesToVector();
 	void printBackground();

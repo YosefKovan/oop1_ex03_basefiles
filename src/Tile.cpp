@@ -12,3 +12,7 @@ sf::Vector2f Tile::getLocation() const {
 
 	return m_location;
 }
+//-----------------------------------
+int Tile::getObject() {
+	return m_object;
+}
