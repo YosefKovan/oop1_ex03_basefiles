@@ -8,5 +8,7 @@ configure_file ("game images/key.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("game images/wall.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("game images/save.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("game images/bin.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("game images/Reset.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
 
 

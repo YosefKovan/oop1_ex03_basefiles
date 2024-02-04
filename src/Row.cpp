@@ -1,7 +1,7 @@
 #include "Row.h"
 
-Row::Row(int row ,int size, const Tile& value )
-   :m_size(size), m_row(row), m_tiles(nullptr)
+Row::Row(int size, const Tile& value )
+   :m_size(size), m_tiles(nullptr)
 {}
 //--------------------------------------
 Row::Row(const Row& other) {
@@ -10,7 +10,6 @@ Row::Row(const Row& other) {
 		delete[] m_tiles;
 	}
 	
-	m_row = other.m_row;
 	m_size = other.m_size;
 	m_tiles = new Tile[m_size];
 	for (int i = 0; i < m_size; ++i) {
@@ -68,10 +67,6 @@ Row& Row::operator=(const Row& other) {
 Row::~Row() {
 	if(m_tiles)
 	   delete[] m_tiles; 
-}
-//--------------------------------------
-int Row::getRow() const {
-	return m_row;
 }
 //--------------------------------------
 void Row::remove(int index) {

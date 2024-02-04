@@ -1,11 +1,9 @@
 #include "Grid.h"
 #include <iostream>
 
-//std::cout << object << std::endl; for debuggind
-
-Grid::Grid(const int& rows, const int& cols) 
+Grid::Grid(const int& rows, const int& cols, std::vector<Row> &rowsVect) 
 	: m_rowCols(rows,cols), m_sqrSize(40, 40),
-	  m_totalGrid(1100, 840)
+	  m_totalGrid(1100, 840), m_rows(rowsVect)
 {
 	setVariables();
 	createGridSquares();
@@ -66,21 +64,28 @@ void Grid::updateRow(sf::Vector2f location, int object) {
 	auto tile = Tile(gridLocation, object);
 	
 	for (int i = 0; i < m_rows.size(); i++) {
-		if (m_rows[i].getRow() == row) {
+		
+		if (object == Mouse) //this will remove all other mice
+			removeMouseFromRow(i);
+		
+		if (i == row) {
 			if (object != Bin && !locationExists(gridLocation, i))
 				m_rows[i].push_back(tile);
 			else if(object == Bin)
-				deleteFromRow(gridLocation, i, row);
-			return;
+				deleteFromRow(gridLocation, i);
 		}
 	}
 	
-	if (object != Bin) {
-		m_rows.push_back(Row(row));
-		m_rows.back().push_back(tile);
-	}
 }
+//------------------------------------------
+void Grid::removeMouseFromRow(int index) {
 
+	for (int i = 0; i < m_rows[index].size(); i++) {
+		if (m_rows[index].at(i).getObject() == Mouse)
+			m_rows[index].remove(i);
+	}
+
+}
 //------------------------------------------
 bool Grid::locationExists(sf::Vector2f location, int index) {
 
@@ -97,7 +102,7 @@ bool Grid::locationsEqual(sf::Vector2f location1, sf::Vector2f location2) {
 }
 
 //------------------------------------------
-void Grid::deleteFromRow(sf::Vector2f location, int index ,int row) {
+void Grid::deleteFromRow(sf::Vector2f location, int index) {
 
 	for (int i = 0; i < m_rows[index].size(); i++) {
 		if (locationsEqual(location, m_rows[index].at(i).getLocation())){
@@ -141,12 +146,14 @@ void Grid::drawGrid(sf::RenderWindow &m_window) {
 void Grid::drawImagesOnGrid(sf::RenderWindow& window, sf::Sprite sprite[8]) {
 
 	for (int i = 0; i < m_rows.size(); i++) {
-		for (int j = 0; j < m_rows[i].size(); j++) {
-			sf::Vector2f location = m_rows[i].at(j).getLocation();
-			int object = m_rows[i].at(j).getObject();
-			scaleImage(m_sqrSize.x, m_sqrSize.y, sprite[object]);
-			sprite[object].setPosition(location);
-			window.draw(sprite[object]);
+		if(!m_rows[i].empty()){
+			for (int j = 0; j < m_rows[i].size(); j++) {
+				sf::Vector2f location = m_rows[i].at(j).getLocation();
+				int object = m_rows[i].at(j).getObject();
+				scaleImage(m_sqrSize.x, m_sqrSize.y, sprite[object]);
+				sprite[object].setPosition(location);
+				window.draw(sprite[object]);
+			}
 		}
 	}
 }
@@ -156,5 +163,9 @@ void Grid::scaleImage(int width, int height, sf::Sprite& sprite) {
 	float xScale = width / sprite.getLocalBounds().width;
 	float yScale = height / sprite.getLocalBounds().height;
 	sprite.setScale(xScale, yScale);
-
+}
+//------------------------------------------
+std::vector<Row> Grid::getAllRows() const{
+	
+	return m_rows;
 }
