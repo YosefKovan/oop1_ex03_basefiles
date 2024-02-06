@@ -6,7 +6,7 @@
 
 
 File::File() 
-	:m_rows(MAX_ROWS), m_cols(MAX_COLS), m_fileName("C:/Users/USER/Desktop/self projects/Board.txt"),
+	:m_rows(MAX_ROWS), m_cols(MAX_COLS), m_fileName("C:/Users/USER/Desktop/Board.txt"),
 	 m_rowsArr(std::vector<Row>())
 {}
 
@@ -15,6 +15,9 @@ void File::saveToFile(const Grid &grid) {
 
 	m_rowsArr = grid.getAllRows();
 	auto file = std::ofstream(m_fileName);
+
+	sf::Vector2f rowsCols = grid.getRowsAndCols();
+	file << rowsCols.y << ' ' << rowsCols.x <<'\n';
 
 	for (int i = 0; i < m_rowsArr.size(); i++) {
 

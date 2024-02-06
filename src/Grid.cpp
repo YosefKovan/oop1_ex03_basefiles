@@ -63,7 +63,7 @@ bool Grid::isOnGrid(sf::Vector2f position) {
 void Grid::updateRow(sf::Vector2f location, int object) {
 
 	int row;
-	//this function updates row by refference
+	//this function updates row by refference that way we know the row we need
 	sf::Vector2f gridLocation = getGridLocation(location, row); 
 	auto tile = Tile(gridLocation, object);
 	
@@ -167,4 +167,8 @@ void Grid::drawImagesOnGrid(sf::RenderWindow& window, Images& images) {
 std::vector<Row> Grid::getAllRows() const{
 	
 	return m_rows;
+}
+//------------------------------------------
+sf::Vector2f Grid::getRowsAndCols() const{
+	return m_gridRowsCols;
 }

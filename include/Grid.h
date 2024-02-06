@@ -17,6 +17,7 @@ public:
 	void drawImagesOnGrid(sf::RenderWindow&, Images &images);
 	std::vector<Row> getAllRows() const;
 	sf::Vector2f getStartLocation() const;
+	sf::Vector2f getRowsAndCols() const;
 	
 private:
 	sf::Vector2f m_gridRowsCols;
