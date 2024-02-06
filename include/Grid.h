@@ -3,29 +3,28 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Row.h"
+#include "Images.h"
 
-enum LenhHeight{rows, cols};
 
 class Grid {
 
 public:
-	Grid(const int&, const int&, std::vector<Row> &rowsVect);
+	Grid(const int&, const int&, std::vector<Row> rowsVect = std::vector<Row>());
 	Grid() = default;
 	bool isOnGrid(sf::Vector2f position);
 	void updateRow(sf::Vector2f, int);
 	sf::Vector2f getGridLocation(sf::Vector2f location, int& row);
 	void drawGrid(sf::RenderWindow&);
-	void drawImagesOnGrid(sf::RenderWindow&, sf::Sprite sprite[8]);
-	void scaleImage(int, int, sf::Sprite&);
+	void drawImagesOnGrid(sf::RenderWindow&, Images &images);
 	std::vector<Row> getAllRows() const;
+	sf::Vector2f getStartLocation() const;
 	
 private:
 	sf::Vector2f m_rowCols;
 	sf::Vector2f m_lengthHeight;
 	sf::Vector2f m_startLocation;
 	sf::Vector2f m_totalGrid;
-	sf::Vector2f m_sqrSize;
-	
+
 	std::vector < std::vector<sf::RectangleShape>> m_rectangles;
 	std::vector<Row> m_rows;
 

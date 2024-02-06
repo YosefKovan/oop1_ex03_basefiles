@@ -6,8 +6,11 @@
 #include "Grid.h"
 #include "Row.h"
 #include "tile.h"
+#include "File.h"
+#include "Images.h"
 
 class Screen {
+
 public:
 	Screen();
 	void screenMain();
@@ -15,21 +18,13 @@ public:
 private:
 	Bar m_bar;
 	Grid m_grid;
+	File m_file;
+	Images m_images;
 	int m_object;
 	sf::RenderWindow m_window;
-	std::vector<sf::Texture> m_texture;
-	std::vector<sf::Sprite> m_sprite;
 
-	sf::Texture m_textures[11];
-	sf::Sprite m_sprites[11];
-
-	void addImagesToVector();
 	void printBackground();
 	void checkEvents();
 	void handleClick(const sf::Event::MouseButtonEvent&);
 	void setGrid();
-	bool readFromFile();
-	void updateRow(std::vector<Row>&, std::string, int);
-	void saveToFile();
-	void fillRow(Tile, std::ofstream&);
 };

@@ -1,4 +1,5 @@
 #include "Bar.h"
+#include <iostream>
 
 Bar::Bar()
 	:m_barWidth(200), m_objectSize(90), m_rowSpace(60), m_barHeight(840)
@@ -10,7 +11,7 @@ void Bar::setLocations() {
 
 	int row = 50, col1 = 20, col2 = 130;
 	
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < BAR_OBJ_AMOUNT; i++) {
 		if (i % 2 == 0) {
 			auto vector2i = sf::Vector2i(col1, row);
 			m_objectLocations.push_back(vector2i);
@@ -23,20 +24,14 @@ void Bar::setLocations() {
 	}
 }
 //----------------------------------------------------
-void Bar::printBarToScreen(sf::RenderWindow& window, sf::Sprite sprite[8]){
+void Bar::DrawBarToScreen(sf::RenderWindow& window, Images &images){
+	
+	images.scaleImages(m_objectSize, m_objectSize);
 
-	for (int i = 0; i < 10; i++) {
-		scaleImage(m_objectSize, m_objectSize, sprite[i]);
-	    sprite[i].setPosition(m_objectLocations[i].x, m_objectLocations[i].y);
-		window.draw(sprite[i]);
+	for (int i = 0; i < BAR_OBJ_AMOUNT; i++) {
+	    images.getSprite(i).setPosition(m_objectLocations[i].x, m_objectLocations[i].y);
+		window.draw(images.getSprite(i));	
 	}
-}
-//----------------------------------------------------
-void Bar::scaleImage(int width, int height, sf::Sprite &sprite){
-
-	float xScale = width / sprite.getLocalBounds().width;
-	float yScale = height / sprite.getLocalBounds().height;
-	sprite.setScale(xScale, yScale);
 	
 }
 //----------------------------------------------------
@@ -51,7 +46,7 @@ bool Bar::isOnBar(sf::Vector2f location) const{
 //----------------------------------------------------
 void Bar::checkAndChangeCurObj(sf::Vector2f location, int &object) {
 	
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < BAR_OBJ_AMOUNT; i++) {
 		int x = m_objectLocations[i].x;
 		int y = m_objectLocations[i].y;
 		if (location.x >= x && location.x <= x + m_objectSize) {

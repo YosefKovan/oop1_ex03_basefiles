@@ -27,3 +27,4 @@ target_link_libraries (${CMAKE_PROJECT_NAME} sfml-graphics sfml-main)
 
 include (cmake/SFML.cmake)
 
+

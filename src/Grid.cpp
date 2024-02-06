@@ -1,9 +1,8 @@
 #include "Grid.h"
 #include <iostream>
 
-Grid::Grid(const int& rows, const int& cols, std::vector<Row> &rowsVect) 
-	: m_rowCols(rows,cols), m_sqrSize(40, 40),
-	  m_totalGrid(1100, 840), m_rows(rowsVect)
+Grid::Grid(const int& rows, const int& cols, std::vector<Row> rowsVect)
+	: m_rowCols(cols, rows), m_totalGrid(1100, 840), m_rows(rowsVect)
 {
 	setVariables();
 	createGridSquares();
@@ -11,11 +10,16 @@ Grid::Grid(const int& rows, const int& cols, std::vector<Row> &rowsVect)
 //------------------------------------------
 void Grid::setVariables() {
 
-	m_lengthHeight.x = m_sqrSize.x * m_rowCols.x;
-	m_lengthHeight.y = m_sqrSize.y * m_rowCols.y;
+	m_lengthHeight.x = GRID_SQR * m_rowCols.x;
+	m_lengthHeight.y = GRID_SQR * m_rowCols.y;
 
-	m_startLocation.x = (m_totalGrid.x - m_lengthHeight.x) / 2.0f + 200;
-	m_startLocation.y = (m_totalGrid.y - m_lengthHeight.y) / 2.0f;
+	m_startLocation.x = (m_totalGrid.x - m_lengthHeight.x) / 2 + 200;
+	m_startLocation.y = (m_totalGrid.y - m_lengthHeight.y) / 2;
+}
+//------------------------------------------
+sf::Vector2f Grid::getStartLocation() const{
+	
+	return m_startLocation;
 }
 //------------------------------------------
 void Grid::createGridSquares() {
@@ -33,10 +37,10 @@ void Grid::createGridSquares() {
 void Grid::addSquaresToVect(int row, int col, std::vector<sf::RectangleShape>& vector) {
 
 	sf::Vector2f location;
-	location.x = m_startLocation.x + col * m_sqrSize.x;
-	location.y = m_startLocation.y + row * m_sqrSize.y;
+	location.x = m_startLocation.x + col * GRID_SQR;
+	location.y = m_startLocation.y + row * GRID_SQR;
 
-	sf::RectangleShape rectangle(m_sqrSize);
+	sf::RectangleShape rectangle(sf::Vector2f(GRID_SQR, GRID_SQR));
 	rectangle.setPosition(location);
 	rectangle.setFillColor(sf::Color(255, 255, 255, 128));
 	rectangle.setOutlineColor(sf::Color::Black);
@@ -57,7 +61,7 @@ bool Grid::isOnGrid(sf::Vector2f position) {
 }
 //------------------------------------------
 void Grid::updateRow(sf::Vector2f location, int object) {
-	
+
 	int row;
 	//this function updates row by refference
 	sf::Vector2f gridLocation = getGridLocation(location, row); 
@@ -76,6 +80,19 @@ void Grid::updateRow(sf::Vector2f location, int object) {
 		}
 	}
 	
+}
+//------------------------------------------
+sf::Vector2f Grid::getGridLocation(sf::Vector2f location, int& row) {
+
+	for (int r = 0; r < m_rowCols.y; r++) {
+		for (int c = 0; c < m_rowCols.x; c++) {
+			sf::Vector2f sqrPos = m_rectangles[r][c].getPosition();
+			if (checkPosInSquare(sqrPos, location)) {
+				row = r;
+				return sqrPos;
+			}
+		}
+	}
 }
 //------------------------------------------
 void Grid::removeMouseFromRow(int index) {
@@ -111,23 +128,11 @@ void Grid::deleteFromRow(sf::Vector2f location, int index) {
 	}	
 }
 //------------------------------------------
-sf::Vector2f Grid::getGridLocation(sf::Vector2f location, int& row) {
 
-	for (int r = 0; r < m_rowCols.y; r++) {
-		for (int c = 0; c < m_rowCols.x; c++) {
-			sf::Vector2f sqrPos = m_rectangles[r][c].getPosition();
-			if (checkPosInSquare(sqrPos, location)) {
-				row = r;
-				return sqrPos;
-			}
-		}
-	}
-}				
-//------------------------------------------
 bool Grid::checkPosInSquare(sf::Vector2f square, sf::Vector2f pos) {
 	
-	if (square.x <= pos.x && (square.x + m_sqrSize.x >= pos.x)) 
-		if (square.y <= pos.y && square.y + m_sqrSize.y >= pos.y)
+	if (square.x <= pos.x && (square.x + GRID_SQR > pos.x))
+		if (square.y <= pos.y && square.y + GRID_SQR > pos.y)
 			return true;
 	
 	return false;
@@ -135,7 +140,7 @@ bool Grid::checkPosInSquare(sf::Vector2f square, sf::Vector2f pos) {
 
 //------------------------------------------
 void Grid::drawGrid(sf::RenderWindow &m_window) {
-
+	
 	for (int r = 0; r < m_rectangles.size(); r++) {
 		for (int c = 0; c < m_rectangles[r].size(); c++) {
 			m_window.draw(m_rectangles[r][c]);
@@ -143,26 +148,20 @@ void Grid::drawGrid(sf::RenderWindow &m_window) {
 	}	
 }
 //------------------------------------------
-void Grid::drawImagesOnGrid(sf::RenderWindow& window, sf::Sprite sprite[8]) {
+void Grid::drawImagesOnGrid(sf::RenderWindow& window, Images& images) {
 
+	images.scaleImages(GRID_SQR, GRID_SQR);
+	
 	for (int i = 0; i < m_rows.size(); i++) {
 		if(!m_rows[i].empty()){
 			for (int j = 0; j < m_rows[i].size(); j++) {
 				sf::Vector2f location = m_rows[i].at(j).getLocation();
-				int object = m_rows[i].at(j).getObject();
-				scaleImage(m_sqrSize.x, m_sqrSize.y, sprite[object]);
-				sprite[object].setPosition(location);
-				window.draw(sprite[object]);
+				const int object = m_rows[i].at(j).getObject();
+				images.getSprite(object).setPosition(location);
+				window.draw(images.getSprite(object));
 			}
 		}
 	}
-}
-//------------------------------------------
-void Grid::scaleImage(int width, int height, sf::Sprite& sprite) {
-
-	float xScale = width / sprite.getLocalBounds().width;
-	float yScale = height / sprite.getLocalBounds().height;
-	sprite.setScale(xScale, yScale);
 }
 //------------------------------------------
 std::vector<Row> Grid::getAllRows() const{
