@@ -2,7 +2,7 @@
 #include <iostream>
 
 Grid::Grid(const int& rows, const int& cols, std::vector<Row> rowsVect)
-	: m_rowCols(cols, rows), m_totalGrid(1100, 840), m_rows(rowsVect)
+	: m_gridRowsCols(cols, rows), m_totalRighScreen(1100, 840), m_rows(rowsVect)
 {
 	setVariables();
 	createGridSquares();
@@ -10,11 +10,11 @@ Grid::Grid(const int& rows, const int& cols, std::vector<Row> rowsVect)
 //------------------------------------------
 void Grid::setVariables() {
 
-	m_lengthHeight.x = GRID_SQR * m_rowCols.x;
-	m_lengthHeight.y = GRID_SQR * m_rowCols.y;
+	m_lengthHeight.x = GRID_SQR * m_gridRowsCols.x;
+	m_lengthHeight.y = GRID_SQR * m_gridRowsCols.y;
 
-	m_startLocation.x = (m_totalGrid.x - m_lengthHeight.x) / 2 + 200;
-	m_startLocation.y = (m_totalGrid.y - m_lengthHeight.y) / 2;
+	m_startLocation.x = (m_totalRighScreen.x - m_lengthHeight.x) / 2 + BAR_WIDTH;
+	m_startLocation.y = (m_totalRighScreen.y - m_lengthHeight.y) / 2;
 }
 //------------------------------------------
 sf::Vector2f Grid::getStartLocation() const{
@@ -24,9 +24,9 @@ sf::Vector2f Grid::getStartLocation() const{
 //------------------------------------------
 void Grid::createGridSquares() {
 
-	for (int row = 0; row < m_rowCols.y; row++) {
+	for (int row = 0; row < m_gridRowsCols.y; row++) {
 		std::vector<sf::RectangleShape> rectangleVect;
-		for (int col = 0; col < m_rowCols.x; col++) {
+		for (int col = 0; col < m_gridRowsCols.x; col++) {
 			addSquaresToVect(row, col, rectangleVect);
 		}
 		
@@ -84,8 +84,8 @@ void Grid::updateRow(sf::Vector2f location, int object) {
 //------------------------------------------
 sf::Vector2f Grid::getGridLocation(sf::Vector2f location, int& row) {
 
-	for (int r = 0; r < m_rowCols.y; r++) {
-		for (int c = 0; c < m_rowCols.x; c++) {
+	for (int r = 0; r < m_gridRowsCols.y; r++) {
+		for (int c = 0; c < m_gridRowsCols.x; c++) {
 			sf::Vector2f sqrPos = m_rectangles[r][c].getPosition();
 			if (checkPosInSquare(sqrPos, location)) {
 				row = r;

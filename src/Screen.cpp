@@ -82,7 +82,6 @@ void Screen::checkEvents() {
 		 cols = MAX_COLS;
 	 }
 	 
-	 std::cout << rows << cols;
 	 std::vector<Row> rowsVect(rows);
 	 m_grid = Grid(rows, cols, rowsVect);
  } 

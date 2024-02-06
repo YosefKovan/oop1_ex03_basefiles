@@ -1,11 +1,12 @@
 #include "File.h"
 #include <fstream>
 #include "Consts.h"
+#include <filesystem>
 
 
 
 File::File() 
-	:m_rows(MAX_ROWS), m_cols(MAX_COLS), m_fileName("Board.txt"),
+	:m_rows(MAX_ROWS), m_cols(MAX_COLS), m_fileName("C:/Users/USER/Desktop/self projects/Board.txt"),
 	 m_rowsArr(std::vector<Row>())
 {}
 
@@ -13,8 +14,7 @@ File::File()
 void File::saveToFile(const Grid &grid) {
 
 	m_rowsArr = grid.getAllRows();
-	std::string fileName = "C:/Users/USER/PycharmProjects/Boardd.txt";
-	auto file = std::ofstream(fileName);
+	auto file = std::ofstream(m_fileName);
 
 	for (int i = 0; i < m_rowsArr.size(); i++) {
 
@@ -47,24 +47,24 @@ void File::fillRow(Tile tile, std::ofstream& file, int rowIndex, int& index) {
 //---------------------------------
 bool File::readFromFile(Grid& grid) {
 
+
+	if (!std::filesystem::exists(m_fileName))
+		return false;
+
 	auto file = std::ifstream(m_fileName);
 	std::string line;
 
-	if (file.is_open()) {
-		file >> m_rows >> m_cols;
-		m_rowsArr = std::vector<Row>(m_rows);
-		grid = Grid(m_rows, m_cols, m_rowsArr);
+	file >> m_rows >> m_cols;
+	m_rowsArr = std::vector<Row>(m_rows);
+	grid = Grid(m_rows, m_cols, m_rowsArr);
 
-		int row = -1; //this is because it will read the '\n' character first!
-		while (std::getline(file, line)) {
-			updateRow(line, row, grid);
-			++row;
-		}
-
-		return true;
+	int row = -1; //this is because it will read the '\n' character first!
+	while (std::getline(file, line)) {
+		updateRow(line, row, grid);
+		++row;
 	}
 
-	return false;
+	return true;
 }
 //---------------------------------
 void File::updateRow(std::string line, int row, Grid &grid) {
