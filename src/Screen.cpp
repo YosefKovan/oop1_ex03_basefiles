@@ -57,7 +57,7 @@ void Screen::checkEvents() {
 		
 		 if (m_object == Save)
 			m_file.saveToFile(m_grid);
-		 else if (m_object == Reset) { //this will reset the screen 
+		 if (m_object == Reset) { //this will reset the screen 
 			 setGrid();
 			 m_object = None;
 		 }
@@ -82,8 +82,7 @@ void Screen::checkEvents() {
 		 cols = MAX_COLS;
 	 }
 	 
-	 std::vector<Row> rowsVect(rows);
-	 m_grid = Grid(rows, cols, rowsVect);
+	 m_grid = Grid(rows, cols);
  } 
  
 

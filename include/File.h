@@ -11,12 +11,11 @@ class File {
 
 public:
 	File();
-	void saveToFile(const Grid&);
+	void saveToFile(Grid&) const;
 	bool readFromFile(Grid&);
 
 private:
 	void updateRow(std::string, int, Grid&);
-	void fillRow(Tile, std::ofstream&, int, int&);
 	int getObjectInt(char object);
 	std::string m_fileName;
 	int m_rows, m_cols;
