@@ -41,6 +41,9 @@ void Screen::checkEvents() {
 		 case sf::Event::Closed:
 			 m_window.close();
 			 break;
+		 case sf::Event::MouseMoved:
+			 handleMouseMoved(event.mouseMove.x, event.mouseMove.y);
+			 break;
 		 case sf::Event::MouseButtonReleased:
 			 handleClick(event.mouseButton);
 			 break;
@@ -48,10 +51,17 @@ void Screen::checkEvents() {
 	 }	
 }
 //---------------------------------
- 
+void Screen::handleMouseMoved(int x, int y) {
+	
+	sf::Vector2f mousePosition = m_window.mapPixelToCoords({ x, y });
+	if (m_grid.isOnGrid(mousePosition))
+	   m_grid.tileAvailable(mousePosition, m_object, m_window);
+}
+//---------------------------------
  void Screen::handleClick(const sf::Event::MouseButtonEvent& event) {
 	 
 	 sf::Vector2f eventPos = m_window.mapPixelToCoords({ event.x, event.y });
+
 	 if (m_bar.isOnBar(eventPos)) {
 		 m_bar.checkAndChangeCurObj(eventPos, m_object);
 		

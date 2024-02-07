@@ -18,6 +18,7 @@ public:
 	void updateTile(int, int, int);
 	int getObjectInTile(int, int);
 	std::vector<Row> getTotalRows();
+	void tileAvailable(sf::Vector2f, int, sf::RenderWindow& window);
 		
 private:
 	sf::Vector2f m_start;
@@ -25,7 +26,9 @@ private:
 	std::vector<Row> m_rows;
 
 	void setVariables(int, int, int, int);
-	sf::RectangleShape createSquare(sf::Vector2f);
+	sf::RectangleShape createSquare(sf::Vector2f, sf::Color color); //function not variable!
 	void createTiles(int rows, int cols, int object = None);
-
+	void removeAllMice();
+	void dealWithTile(Tile&, int, int, int);	
+	void drawSquare(sf::RenderWindow&, int, int);
 };

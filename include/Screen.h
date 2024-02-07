@@ -27,4 +27,5 @@ private:
 	void checkEvents();
 	void handleClick(const sf::Event::MouseButtonEvent&);
 	void setGrid();
+	void handleMouseMoved(int, int);
 };

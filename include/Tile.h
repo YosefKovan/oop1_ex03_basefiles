@@ -12,6 +12,7 @@ public:
 	int getObject();
 	bool isOnTile(sf::Vector2f) const;
 	void updateTile(int);
+	
 
 private:
 	sf::Vector2f m_location;

@@ -4,8 +4,6 @@
 #include "Consts.h"
 #include <filesystem>
 
-
-
 File::File() 
 	:m_rows(MAX_ROWS), m_cols(MAX_COLS), m_fileName("C:/Users/USER/Desktop/Board.txt")
 {}
@@ -30,7 +28,6 @@ void File::saveToFile(Grid &grid) const{
 }
 //---------------------------------
 bool File::readFromFile(Grid& grid) {
-
 
 	if (!std::filesystem::exists(m_fileName))
 		return false;
@@ -62,8 +59,10 @@ void File::updateRow(std::string line, int row, Grid &grid) {
 //---------------------------------
 int File::getObjectInt(char object) {
 
-	for (int i = Mouse; i < 7; i++)
-		if (object == charArr[i])
+	for (int i = Mouse; i < 7; i++) {
+		if (object == charArr[i]) {
 			return i;
+		}
+	}
 }
 

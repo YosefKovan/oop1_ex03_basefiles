@@ -26,3 +26,4 @@ void Tile::updateTile(int object) {
 
 	m_object = object;
 }
+//-----------------------------------

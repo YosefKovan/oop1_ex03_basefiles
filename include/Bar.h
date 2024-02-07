@@ -4,6 +4,7 @@
 #include <vector>
 #include "Consts.h"
 #include "Images.h"
+#include "Tile.h"
 
 class Bar {
 public:
