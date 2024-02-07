@@ -14,6 +14,7 @@ void File::saveToFile(Grid &grid) const{
 
 	auto file = std::ofstream(m_fileName);
 	auto rowsArr = grid.getTotalRows();
+	file << rowsArr.size() << ' ' << rowsArr[0].size() << '\n';
 
 	for (int r = 0; r < rowsArr.size(); r++) {
 		for (int c = 0; c < rowsArr[r].size(); c++) {
