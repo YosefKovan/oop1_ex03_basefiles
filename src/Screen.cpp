@@ -18,7 +18,7 @@ void Screen::screenMain() {
        
 		m_window.clear();
 		printBackground();
-		m_bar.DrawBarToScreen(m_window, m_images);
+		m_bar.DrawBarToScreen(m_window, m_images, m_object);
 		m_grid.drawGrid(m_window);
 		checkEvents();
 		m_grid.drawImagesOnGrid(m_window, m_images);
@@ -29,7 +29,8 @@ void Screen::screenMain() {
 //---------------------------------
 void Screen::printBackground(){
 	
-	m_window.draw(m_images.getSprite(Background));
+	sf::Sprite sprite = m_images.getSprite(Background);
+	m_window.draw(sprite);
 }
 //---------------------------------
 void Screen::checkEvents() {
@@ -65,8 +66,10 @@ void Screen::handleMouseMoved(int x, int y) {
 	 if (m_bar.isOnBar(eventPos)) {
 		 m_bar.checkAndChangeCurObj(eventPos, m_object);
 		
-		 if (m_object == Save)
-			m_file.saveToFile(m_grid);
+		 if (m_object == Save) {
+			 m_file.saveToFile(m_grid);
+			 m_object = None;
+		 }
 		 if (m_object == Reset) { //this will reset the screen 
 			 setGrid();
 			 m_object = None;

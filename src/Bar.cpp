@@ -13,24 +13,34 @@ void Bar::setLocations() {
 	
 	for (int i = 0; i < BAR_OBJ_AMOUNT; i++) {
 		if (i % 2 == 0) {
-			auto vector2i = sf::Vector2i(col1, row);
-			m_objectLocations.push_back(vector2i);
+			auto location = sf::Vector2f(col1, row);
+			auto tile = Tile(location, i);
+			m_tiles.push_back(tile);
 			continue;
 		}
 
-		auto vector2i = sf::Vector2i(col2, row);
-		m_objectLocations.push_back(vector2i);
+		auto location = sf::Vector2f(col2, row);
+		auto tile = Tile(location, i);
+		m_tiles.push_back(tile);
 		row += (m_objectSize + m_rowSpace);
 	}
 }
 //----------------------------------------------------
-void Bar::DrawBarToScreen(sf::RenderWindow& window, Images &images){
+void Bar::DrawBarToScreen(sf::RenderWindow& window, Images &images, int object){
 	
-	images.scaleImages(m_objectSize, m_objectSize);
+	
+	auto scaleSize = sf::Vector2f(m_objectSize, m_objectSize);
+	bool trans = false;
 
-	for (int i = 0; i < BAR_OBJ_AMOUNT; i++) {
-	    images.getSprite(i).setPosition(m_objectLocations[i].x, m_objectLocations[i].y);
-		window.draw(images.getSprite(i));	
+	for (int i = 0; i < m_tiles.size(); i++) {
+		
+		if (object == i)
+			trans = true;
+		
+		sf::Sprite sprite = images.getSprite(i, scaleSize, trans);
+		sprite.setPosition(m_tiles[i].getLocation());
+		window.draw(sprite);	
+		trans = false;
 	}
 	
 }
@@ -47,12 +57,11 @@ bool Bar::isOnBar(sf::Vector2f location) const{
 void Bar::checkAndChangeCurObj(sf::Vector2f location, int &object) {
 	
 	for (int i = 0; i < BAR_OBJ_AMOUNT; i++) {
-		int x = m_objectLocations[i].x;
-		int y = m_objectLocations[i].y;
-		if (location.x >= x && location.x <= x + m_objectSize) {
-			if (location.y >= y && location.y <= y + m_objectSize) {
+		auto tileLocation = m_tiles[i].getLocation();
+		if (location.x >= tileLocation.x && location.x <= tileLocation.x + m_objectSize) {
+			if (location.y >= tileLocation.y && location.y <= tileLocation.y + m_objectSize) {
 				object = i;
-				break;
+				return;
 			}
 		}	
 	}   

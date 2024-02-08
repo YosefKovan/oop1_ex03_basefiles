@@ -16,16 +16,6 @@ void Grid::setVariables(int rows, int cols, int screenLen, int screenHeight) {
 	m_start.y = (screenHeight - m_gridLenHeight.y) / 2;
 }
 //------------------------------------------
-int Grid::getObjectInTile(int row, int col){
-
-	return m_rows[row].at(col).getObject();
-}
-//------------------------------------------
-std::vector<Row> Grid::getTotalRows() {
-
-	return m_rows;
-}
-//------------------------------------------
 void Grid::createTiles(int rows, int cols, int object) {
 
 	for (int r = 0; r < rows; r++) {
@@ -134,16 +124,27 @@ void Grid::removeAllMice() {
 //------------------------------------------
 void Grid::drawImagesOnGrid(sf::RenderWindow& window, Images& images) {
 
-	images.scaleImages(GRID_SQR, GRID_SQR);
+	auto scaleSize = sf::Vector2f(GRID_SQR, GRID_SQR);
 
 	for (int i = 0; i < m_rows.size(); i++) {
 		for (int j = 0; j < m_rows[i].size(); j++) {
 			
 			if (m_rows[i].at(j).getObject() != None) {
-				sf::Sprite sprite = images.getSprite(m_rows[i].at(j).getObject());
+				int txtrIndex = m_rows[i].at(j).getObject();
+				sf::Sprite sprite = images.getSprite(txtrIndex, scaleSize);
 				sprite.setPosition(m_rows[i].at(j).getLocation());
 				window.draw(sprite);
 			}
 		}
 	}
+}
+//------------------------------------------
+int Grid::getObjectInTile(int row, int col) {
+
+	return m_rows[row].at(col).getObject();
+}
+//------------------------------------------
+std::vector<Row> Grid::getTotalRows() {
+
+	return m_rows;
 }

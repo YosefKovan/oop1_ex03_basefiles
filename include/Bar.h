@@ -9,7 +9,7 @@
 class Bar {
 public:
 	Bar();
-	void DrawBarToScreen(sf::RenderWindow&, Images& images);
+	void DrawBarToScreen(sf::RenderWindow&, Images& images, int object);
 	bool isOnBar(sf::Vector2f) const;
 	void checkAndChangeCurObj(sf::Vector2f, int&);
 	
@@ -18,6 +18,6 @@ private:
 	int m_barHeight;
 	int m_objectSize;
 	int m_rowSpace;
-	std::vector<sf::Vector2i> m_objectLocations;
+	std::vector<Tile> m_tiles;
 	void setLocations();	
 };
